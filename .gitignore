@@ -1,0 +1,6 @@
+*.zip
+*.tgz
+*.gz
+*.jar
+
+stash

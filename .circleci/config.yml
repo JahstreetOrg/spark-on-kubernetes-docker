@@ -1,12 +1,11 @@
 version: 2
 jobs:
   build:
-    docker:
-      - image: docker:18.06
+    machine: true
     steps:
       - checkout
       - run:
           name: docker-hub
           environment:
             - DOCKERHUB_REPO: sasnouskikh
-          command: sh -c "chmod +x */*/build.sh; */*/build.sh"
+          command: sh -c "*/*/build.sh"

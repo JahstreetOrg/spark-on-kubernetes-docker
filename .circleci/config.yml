@@ -5,8 +5,7 @@ jobs:
     - image: docker:18.06
     steps:
       - checkout
-      - setup_remote_docker:
-          docker_layer_caching: true
+      - setup_remote_docker
       - run:
           name: docker-hub
           environment:

@@ -11,4 +11,4 @@ jobs:
           name: docker-hub
           environment:
             - DOCKERHUB_REPO: sasnouskikh
-          command: sh -c "docker login -u $DOCKER_USER -p $DOCKER_PASSWORD; */*/build.sh"
+          command: sh -c "docker login -u $DOCKER_USER -p $DOCKER_PASSWORD; for script in $(find ./ -name build.sh); do $script; done"

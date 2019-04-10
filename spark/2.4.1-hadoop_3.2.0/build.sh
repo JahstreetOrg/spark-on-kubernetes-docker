@@ -14,5 +14,5 @@ repo="$DOCKERHUB_REPO/${parent_dir_path##*/}"
 tag="${dir_path##*/}"
 
 ( cd ${dir_path}; docker build . ${no_cache} -t "${repo}:${tag}" )
-docker push ${tag}
+docker push "${repo}:${tag}"
 echo "Done! Enjoy..."

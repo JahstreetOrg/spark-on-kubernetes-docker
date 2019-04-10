@@ -9,4 +9,4 @@ jobs:
           name: docker-hub
           environment:
             - DOCKERHUB_REPO: sasnouskikh
-          command: sh -c "*/*/build.sh"
+          command: sh -c "chmod +x */*/build.sh; */*/build.sh"

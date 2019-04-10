@@ -2,7 +2,7 @@
 
 set -ex
 
-: "${DOCKERHUB_REPO:?required}"
+DOCKERHUB_REPO=${DOCKERHUB_REPO:-sasnouskikh}
 
 script_path=`realpath $0`
 dir_path=`dirname ${script_path}`

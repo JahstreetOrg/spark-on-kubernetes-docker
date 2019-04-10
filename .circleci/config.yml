@@ -9,4 +9,4 @@ jobs:
           name: docker-hub
           environment:
             - DOCKERHUB_REPO: sasnouskikh
-          command: bash -c "*/*/build.sh"
+          command: sh -c "*/*/build.sh"

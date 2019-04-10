@@ -1,0 +1,12 @@
+version: 2
+jobs:
+  build:
+    docker:
+      - image: docker:18.06
+    steps:
+      - checkout
+      - run:
+          name: docker-hub
+          environment:
+            - DOCKERHUB_REPO: sasnouskikh
+          command: bash -c "*/*/build.sh"

@@ -1,6 +1,6 @@
 FROM openjdk:8-alpine
 
-ARG SPARK_VERSION_ARG
+ARG SPARK_VERSION_ARG   2.4.1
 
 ENV BASE_IMAGE      openjdk:8-alpine
 ENV SPARK_VERSION   $SPARK_VERSION_ARG
@@ -20,9 +20,9 @@ RUN set -ex && \
 
 ### install spark
 # download distribution or add local one
-COPY spark-${SPARK_VERSION}-bin-without-hadoop.tgz /
-# RUN wget -O /spark-${SPARK_VERSION}-bin-without-hadoop.tgz http://www-us.apache.org/dist/spark/spark-${SPARK_VERSION}/spark-${SPARK_VERSION}-bin-without-hadoop.tgz && \
-RUN tar -xzf /spark-${SPARK_VERSION}-bin-without-hadoop.tgz -C /opt/ && \
+# COPY spark-${SPARK_VERSION}-bin-without-hadoop.tgz /
+RUN wget -O /spark-${SPARK_VERSION}-bin-without-hadoop.tgz http://www-us.apache.org/dist/spark/spark-${SPARK_VERSION}/spark-${SPARK_VERSION}-bin-without-hadoop.tgz && \
+    tar -xzf /spark-${SPARK_VERSION}-bin-without-hadoop.tgz -C /opt/ && \
     ln -s /opt/spark-${SPARK_VERSION}-bin-without-hadoop $SPARK_HOME && \
     rm -f /spark-${SPARK_VERSION}-bin-without-hadoop.tgz && \
     cp $SPARK_CONF_DIR/log4j.properties.template $SPARK_CONF_DIR/log4j.properties && \

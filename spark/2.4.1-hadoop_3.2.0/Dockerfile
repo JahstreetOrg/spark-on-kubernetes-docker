@@ -1,7 +1,7 @@
 ARG SPARK_BASE=sasnouskikh/spark-base:2.4.1-without-hadoop
 FROM $SPARK_BASE
 
-ARG HADOOP_VERSION_ARG
+ARG HADOOP_VERSION_ARG      3.2.0
 
 ENV BASE_IMAGE              $SPARK_BASE#$BASE_IMAGE
 ENV HADOOP_VERSION          $HADOOP_VERSION_ARG
@@ -13,9 +13,9 @@ ENV SPARK_DIST_CLASSPATH    $HADOOP_HOME/etc/hadoop:$HADOOP_HOME/share/hadoop/co
 
 ### install hadoop
 # download distribution or add local one
-COPY hadoop-${HADOOP_VERSION}.tar.gz /
-# RUN wget -O /hadoop-${HADOOP_VERSION}.tar.gz http://www-us.apache.org/dist/hadoop/common/hadoop-${HADOOP_VERSION}/hadoop-${HADOOP_VERSION}.tar.gz && \
-RUN rm -rf $HADOOP_HOME && \
+# COPY hadoop-${HADOOP_VERSION}.tar.gz /
+RUN wget -O /hadoop-${HADOOP_VERSION}.tar.gz http://www-us.apache.org/dist/hadoop/common/hadoop-${HADOOP_VERSION}/hadoop-${HADOOP_VERSION}.tar.gz && \
+    rm -rf $HADOOP_HOME && \
     tar -xzf /hadoop-${HADOOP_VERSION}.tar.gz -C /opt/ && \
     ln -s /opt/hadoop-${HADOOP_VERSION} $HADOOP_HOME && \
     rm -f /hadoop-${HADOOP_VERSION}.tar.gz

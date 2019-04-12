@@ -1,11 +1,15 @@
 version: 2
 jobs:
   build:
-    machine: true
+    branches:
+      only:
+      - master
+        docker:
+        - image: docker:18.06
     steps:
       - checkout
       - run:
           name: docker-hub
           environment:
             - DOCKERHUB_REPO: sasnouskikh
-          command: docker login -u $DOCKER_USER -p $DOCKER_PASSWORD && for script in $(find ./ -name build.sh); do $script; done
+          command: docker login -u $DOCKER_USER -p $DOCKER_PASSWORD && for repo in "spark-base" "spark" "livy" "livy-spark" "jupyter"; do for script in $(find ./$repo/ -name build.sh); do $script; done; done

@@ -8,6 +8,7 @@ jobs:
     - image: docker:18.06
     steps:
       - checkout
+      - setup_remote_docker
       - run:
           name: docker-hub
           environment:

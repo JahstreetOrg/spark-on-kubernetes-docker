@@ -4,8 +4,8 @@ jobs:
     branches:
       only:
       - master
-        docker:
-        - image: docker:18.06
+    docker:
+    - image: docker:18.06
     steps:
       - checkout
       - run:

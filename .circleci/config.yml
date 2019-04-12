@@ -14,3 +14,4 @@ jobs:
         environment:
         - DOCKERHUB_REPO: sasnouskikh
         command: sh -c "docker login -u $DOCKER_USER -p $DOCKER_PASSWORD; for repo in "spark-base" "spark" "livy" "livy-spark" "jupyter"; do for script in $(find ./$repo/ -name build.sh); do $script; done; done"
+

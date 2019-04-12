@@ -22,16 +22,6 @@ set -eu
 : "${LIVY_CONF_DIR:?Variable not set or empty}"
 : "${SPARK_CONF_DIR:?Variable not set or empty}"
 
-# if [ -z "${LIVY_CONF_DIR}" ]; then
-#   echo "LIVY_CONF_DIR should be set"
-#   exit 1
-# fi
-
-# if [ -z "${SPARK_CONF_DIR}" ]; then
-#   echo "SPARK_CONF_DIR should be set"
-#   exit 1
-# fi
-
 LIVY_CONF_FILE=${LIVY_CONF_DIR}/livy.conf
 LIVY_CLIENT_CONF_FILE=${LIVY_CONF_DIR}/livy-client.conf
 SPARK_DEFAULTS_CONF_FILE=${SPARK_CONF_DIR}/spark-defaults.conf

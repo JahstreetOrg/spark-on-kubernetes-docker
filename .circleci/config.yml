@@ -1,13 +1,17 @@
 version: 2
 jobs:
   build:
+    branches:
+      only:
+      - master
     docker:
     - image: docker:18.06
     steps:
-      - checkout
-      - setup_remote_docker
-      - run:
-          name: docker-hub
-          environment:
-            - DOCKERHUB_REPO: sasnouskikh
-          command: docker login -u $DOCKER_USER -p $DOCKER_PASSWORD && for script in $(find ./ -name build.sh); do $script; done
+    - checkout
+    - setup_remote_docker
+    - run:
+        name: docker-hub
+        environment:
+        - DOCKERHUB_REPO: sasnouskikh
+        command: sh -c "docker login -u $DOCKER_USER -p $DOCKER_PASSWORD; for repo in "spark-base" "spark" "livy" "livy-spark" "jupyter"; do for script in $(find ./$repo/ -name build.sh); do $script; done; done"
+

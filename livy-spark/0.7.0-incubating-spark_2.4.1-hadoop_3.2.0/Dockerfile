@@ -26,6 +26,16 @@ RUN unzip /apache-livy-${LIVY_VERSION}-bin.zip -d / && \
     ln -s /opt/apache-livy-${LIVY_VERSION}-bin $LIVY_HOME && \
     rm -f /apache-livy-${LIVY_VERSION}-bin.zip
 
+ADD http://central.maven.org/maven2/io/prometheus/jmx/jmx_prometheus_javaagent/0.11.0/jmx_prometheus_javaagent-0.11.0.jar /opt/spark/jars/jmx_prometheus_javaagent-0.11.0.jar
+
+RUN wget -O /opt/spark/jars/spark-metrics_2.11-2.3-2.0.4.jar https://github.com/banzaicloud/spark-metrics/raw/master/maven-repo/releases/com/banzaicloud/spark-metrics_2.11/2.3-2.0.4/spark-metrics_2.11-2.3-2.0.4.jar && \
+    wget -O /opt/spark/jars/simpleclient-0.6.0.jar http://central.maven.org/maven2/io/prometheus/simpleclient/0.6.0/simpleclient-0.6.0.jar && \
+    wget -O /opt/spark/jars/simpleclient_dropwizard-0.6.0.jar http://central.maven.org/maven2/io/prometheus/simpleclient_dropwizard/0.6.0/simpleclient_dropwizard-0.6.0.jar && \
+    wget -O /opt/spark/jars/simpleclient_pushgateway-0.6.0.jar http://central.maven.org/maven2/io/prometheus/simpleclient_pushgateway/0.6.0/simpleclient_pushgateway-0.6.0.jar
+
+
+
+
 COPY Dockerfile /my_docker/
 
 #  4040 - Spark UI port

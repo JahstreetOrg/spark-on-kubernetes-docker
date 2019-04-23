@@ -66,6 +66,8 @@ RUN cp -f $HADOOP_HOME/share/hadoop/hdfs/lib/guava-23.0.jar $SPARK_HOME/jars/ &&
     wget -O $SPARK_HOME/jars/spark-avro_2.11-2.4.1.jar http://central.maven.org/maven2/org/apache/spark/spark-avro_2.11/2.4.1/spark-avro_2.11-2.4.1.jar && \
     wget -O $SPARK_HOME/jars/kryo-serializers-0.42.jar http://central.maven.org/maven2/de/javakaffee/kryo-serializers/0.42/kryo-serializers-0.42.jar
 
+RUN mv $HADOOP_HOME/etc/hadoop/log4j.properties $HADOOP_HOME/etc/hadoop/log4j.properties.template
+
 # wget -O $SPARK_HOME/jars/slf4j-api-1.7.16.jar http://central.maven.org/maven2/org/slf4j/slf4j-api/1.7.16/slf4j-api-1.7.16.jar
 
 COPY Dockerfile /my_docker/

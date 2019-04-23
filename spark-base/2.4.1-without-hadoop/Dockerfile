@@ -33,7 +33,7 @@ COPY conf/* $SPARK_CONF_DIR/
 COPY entrypoint.sh /opt/
 COPY Dockerfile /my_docker/
 
-SPARK_CLASSPATH="$SPARK_CLASSPATH:/my_docker/conf"
+ENV SPARK_CLASSPATH="$SPARK_CLASSPATH:/my_docker/conf"
 COPY conf/log4j.properties /my_docker/conf/
 
 RUN chmod +x /opt/*.sh

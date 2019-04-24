@@ -2,7 +2,7 @@ ARG SPARK_BASE=sasnouskikh/spark:2.4.1-hadoop_3.2.0
 
 FROM sasnouskikh/livy-builder:0.1 as build
 
-RUN git clone -b v0.6.0-incubating-kubernetes-support https://github.com/jahstreet/incubator-livy.git && \
+RUN git clone -b v0.6.0-incubating-kubernetes-support-dev https://github.com/jahstreet/incubator-livy.git && \
     cd incubator-livy && \
     mvn clean package -DskipTests=true && \
     cp assembly/target/apache-livy-0.7.0-incubating-SNAPSHOT-bin.zip /

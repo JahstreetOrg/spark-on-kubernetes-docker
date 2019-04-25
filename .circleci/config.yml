@@ -4,6 +4,7 @@ jobs:
     branches:
       only:
       - master
+      - develop
     docker:
     - image: docker:18.06
     steps:

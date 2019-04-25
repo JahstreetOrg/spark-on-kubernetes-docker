@@ -1,4 +1,4 @@
-ARG SPARK_BASE=sasnouskikh/spark:2.4.1-hadoop_3.2.0
+ARG SPARK_BASE=sasnouskikh/spark:2.4.2-hadoop_3.2.0
 
 FROM sasnouskikh/livy-builder:0.1 as build
 

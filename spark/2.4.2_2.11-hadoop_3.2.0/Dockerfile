@@ -1,4 +1,4 @@
-ARG SPARK_BASE=sasnouskikh/spark-base:2.4.1-without-hadoop
+ARG SPARK_BASE=sasnouskikh/spark-base:2.4.2_2.11-without-hadoop
 FROM $SPARK_BASE
 
 ARG HADOOP_VERSION_ARG=3.2.0
@@ -9,16 +9,21 @@ ENV HADOOP_HOME             /opt/hadoop
 ENV HADOOP_CONF_DIR         $HADOOP_HOME/conf
 ENV LD_LIBRARY_PATH         $LD_LIBRARY_PATH:$HADOOP_HOME/lib/native
 ENV PATH                    $PATH:$HADOOP_HOME/bin
-ENV SPARK_DIST_CLASSPATH    $HADOOP_HOME/etc/hadoop:$HADOOP_HOME/share/hadoop/common/lib/*:$HADOOP_HOME/share/hadoop/common/*:$HADOOP_HOME/share/hadoop/hdfs/lib/*:$HADOOP_HOME/share/hadoop/hdfs/*:$HADOOP_HOME/share/hadoop/mapreduce/*:$HADOOP_HOME/share/hadoop/yarn/lib/*:$HADOOP_HOME/share/hadoop/yarn/*:$HADOOP_HOME/share/hadoop/tools/lib/*
+ENV SPARK_DIST_CLASSPATH    $SPARK_CLASSPATH:$HADOOP_HOME/etc/hadoop:$HADOOP_HOME/share/hadoop/common/lib/*:$HADOOP_HOME/share/hadoop/common/*:$HADOOP_HOME/share/hadoop/hdfs:$HADOOP_HOME/share/hadoop/hdfs/lib/*:$HADOOP_HOME/share/hadoop/hdfs/*:$HADOOP_HOME/share/hadoop/mapreduce/*:$HADOOP_HOME/share/hadoop/yarn:$HADOOP_HOME/share/hadoop/yarn/lib/*:$HADOOP_HOME/share/hadoop/yarn/*:$HADOOP_HOME/share/hadoop/tools/lib/*
+ENV SPARK_CLASSPATH         $SPARK_CLASSPATH:$HADOOP_HOME/etc/hadoop:$HADOOP_HOME/share/hadoop/common/lib/*:$HADOOP_HOME/share/hadoop/common/*:$HADOOP_HOME/share/hadoop/hdfs:$HADOOP_HOME/share/hadoop/hdfs/lib/*:$HADOOP_HOME/share/hadoop/hdfs/*:$HADOOP_HOME/share/hadoop/mapreduce/*:$HADOOP_HOME/share/hadoop/yarn:$HADOOP_HOME/share/hadoop/yarn/lib/*:$HADOOP_HOME/share/hadoop/yarn/*:$HADOOP_HOME/share/hadoop/tools/lib/*
 
 ### install hadoop
-# download distribution or add local one
-# COPY hadoop-${HADOOP_VERSION}.tar.gz /
 RUN wget -O /hadoop-${HADOOP_VERSION}.tar.gz http://www-us.apache.org/dist/hadoop/common/hadoop-${HADOOP_VERSION}/hadoop-${HADOOP_VERSION}.tar.gz && \
     rm -rf $HADOOP_HOME && \
     tar -xzf /hadoop-${HADOOP_VERSION}.tar.gz -C /opt/ && \
     ln -s /opt/hadoop-${HADOOP_VERSION} $HADOOP_HOME && \
-    rm -f /hadoop-${HADOOP_VERSION}.tar.gz
+    rm -f /hadoop-${HADOOP_VERSION}.tar.gz && \
+    rm -rf $HADOOP_HOME/share/doc $HADOOP_HOME/etc/hadoop/core-site.xml $HADOOP_HOME/etc/hadoop/log4j.properties
+
+#COPY native/libhdfs.a           $HADOOP_HOME/lib/native/
+#COPY native/libsnappy.so.1.1.3  $HADOOP_HOME/lib/native/
+#COPY native/libsnappy.so.1      $HADOOP_HOME/lib/native/
+#COPY native/libsnappy.so        $HADOOP_HOME/lib/native/
 
 # upgrade hadoop libs
 RUN rm -f $HADOOP_HOME/share/hadoop/common/lib/guava-11.0.2.jar && \
@@ -26,22 +31,22 @@ RUN rm -f $HADOOP_HOME/share/hadoop/common/lib/guava-11.0.2.jar && \
     wget -q http://central.maven.org/maven2/com/google/guava/guava/23.0/guava-23.0.jar && \
     cp -f ./guava-23.0.jar $HADOOP_HOME/share/hadoop/common/lib/ && \
     mv -f ./guava-23.0.jar $HADOOP_HOME/share/hadoop/hdfs/lib/ && \
-
     rm -f $HADOOP_HOME/share/hadoop/tools/lib/azure-keyvault-core-1.0.0.jar && \
     wget -q http://central.maven.org/maven2/com/microsoft/azure/azure-keyvault-core/1.1/azure-keyvault-core-1.1.jar && \
     mv -f ./azure-keyvault-core-1.1.jar $HADOOP_HOME/share/hadoop/tools/lib/ && \
-
-    rm -f $HADOOP_HOME/share/hadoop/common/lib/snappy-java-1.0.5.jar && \
-    rm -f $HADOOP_HOME/share/hadoop/hdfs/lib/snappy-java-1.0.5.jar && \
-    wget -q http://central.maven.org/maven2/org/xerial/snappy/snappy-java/1.1.7.2/snappy-java-1.1.7.2.jar && \
-    cp -f ./snappy-java-1.1.7.2.jar $HADOOP_HOME/share/hadoop/common/lib/ && \
-    mv -f ./snappy-java-1.1.7.2.jar $HADOOP_HOME/share/hadoop/hdfs/lib/ && \
-
+    rm -f $HADOOP_HOME/share/hadoop/hdfs/lib/netty-all-*.jar && \
+    rm -f $HADOOP_HOME/share/hadoop/hdfs/lib/snappy-java-*.jar && \
+    rm -f $HADOOP_HOME/share/hadoop/common/lib/snappy-java-*.jar && \
+    cp -f $SPARK_HOME/jars/netty-all-*.jar $HADOOP_HOME/share/hadoop/hdfs/lib/ && \
+    cp -f $SPARK_HOME/jars/snappy-java-*.jar $HADOOP_HOME/share/hadoop/hdfs/lib/ && \
+    cp -f $SPARK_HOME/jars/snappy-java-*.jar $HADOOP_HOME/share/hadoop/common/lib/ && \
     rm -f $HADOOP_HOME/share/hadoop/hdfs/lib/avro-1.7.7.jar && \
     rm -f $HADOOP_HOME/share/hadoop/common/lib/avro-1.7.7.jar && \
     wget -O ./avro-1.8.2.jar http://central.maven.org/maven2/org/apache/avro/avro/1.8.2/avro-1.8.2.jar && \
     cp -f ./avro-1.8.2.jar $HADOOP_HOME/share/hadoop/hdfs/lib/ && \
-    mv -f ./avro-1.8.2.jar $HADOOP_HOME/share/hadoop/common/lib/
+    mv -f ./avro-1.8.2.jar $HADOOP_HOME/share/hadoop/common/lib/ && \
+    rm -f $HADOOP_HOME/share/hadoop/tools/lib/lz4-1.2.0.jar && \
+    cp -f $SPARK_HOME/jars/lz4-java-1.4.0.jar $HADOOP_HOME/share/hadoop/tools/lib/
 
 # configure hadoop classpath with additional libs
 RUN { \
@@ -51,6 +56,8 @@ RUN { \
 # upgrade spark libs and resolve conflicts
 RUN cp -f $HADOOP_HOME/share/hadoop/hdfs/lib/guava-23.0.jar $SPARK_HOME/jars/ && \
     wget -O $SPARK_HOME/jars/json4s-native_2.11-3.5.3.jar https://repo1.maven.org/maven2/org/json4s/json4s-native_2.11/3.5.3/json4s-native_2.11-3.5.3.jar && \
+    rm -f $SPARK_HOME/jars/avro-mapred-1.8.2-hadoop2.jar && \
+    wget -O $SPARK_HOME/jars/avro-mapred-1.8.2.jar http://central.maven.org/maven2/org/apache/avro/avro-mapred/1.8.2/avro-mapred-1.8.2.jar && \
     wget -O $SPARK_HOME/jars/avro-ipc-1.8.2.jar http://central.maven.org/maven2/org/apache/avro/avro-ipc/1.8.2/avro-ipc-1.8.2.jar && \
     rm -f $SPARK_HOME/jars/okhttp-3.8.1.jar && \
     wget -O $SPARK_HOME/jars/okhttp-3.11.0.jar http://central.maven.org/maven2/com/squareup/okhttp3/okhttp/3.11.0/okhttp-3.11.0.jar && \
@@ -63,11 +70,7 @@ RUN cp -f $HADOOP_HOME/share/hadoop/hdfs/lib/guava-23.0.jar $SPARK_HOME/jars/ &&
     wget -O $SPARK_HOME/jars/log4j-1.2.17.jar http://central.maven.org/maven2/log4j/log4j/1.2.17/log4j-1.2.17.jar && \
     wget -O $SPARK_HOME/jars/commons-configuration-1.6.jar http://central.maven.org/maven2/commons-configuration/commons-configuration/1.6/commons-configuration-1.6.jar && \
     wget -O $SPARK_HOME/jars/spark-avro_2.11-4.0.0.jar http://central.maven.org/maven2/com/databricks/spark-avro_2.11/4.0.0/spark-avro_2.11-4.0.0.jar && \
-    wget -O $SPARK_HOME/jars/spark-avro_2.11-2.4.1.jar http://central.maven.org/maven2/org/apache/spark/spark-avro_2.11/2.4.1/spark-avro_2.11-2.4.1.jar && \
-    wget -O $SPARK_HOME/jars/kryo-serializers-0.42.jar http://central.maven.org/maven2/de/javakaffee/kryo-serializers/0.42/kryo-serializers-0.42.jar
-
-RUN mv $HADOOP_HOME/etc/hadoop/log4j.properties $HADOOP_HOME/etc/hadoop/log4j.properties.template
-
-# wget -O $SPARK_HOME/jars/slf4j-api-1.7.16.jar http://central.maven.org/maven2/org/slf4j/slf4j-api/1.7.16/slf4j-api-1.7.16.jar
+    wget -O $SPARK_HOME/jars/spark-avro_2.11-2.4.2.jar http://central.maven.org/maven2/org/apache/spark/spark-avro_2.11/2.4.2/spark-avro_2.11-2.4.2.jar && \
+    wget -O $SPARK_HOME/jars/kryo-serializers-0.45.jar http://central.maven.org/maven2/de/javakaffee/kryo-serializers/0.45/kryo-serializers-0.45.jar
 
 COPY Dockerfile /my_docker/

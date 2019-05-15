@@ -1,9 +1,9 @@
-ARG SPARK_BASE=sasnouskikh/spark:2.4.2_2.12-hadoop_3.2.0
+ARG SPARK_BASE=sasnouskikh/spark:2.4.3_2.12-hadoop_3.2.0
 
 FROM sasnouskikh/livy-builder:0.1 as build
 
 ENV GITHUB_REPO     jahstreet/incubator-livy
-ENV GITHUB_BRANCH   v0.6.0-incubating-kubernetes-support-2.12
+ENV GITHUB_BRANCH   v0.6.0-incubating-kubernetes-support-dev-2.12
 
 RUN git clone -b ${GITHUB_BRANCH} https://github.com/${GITHUB_REPO}.git && \
     cd incubator-livy && \

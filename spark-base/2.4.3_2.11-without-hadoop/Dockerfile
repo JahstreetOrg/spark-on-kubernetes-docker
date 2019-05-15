@@ -1,6 +1,6 @@
 FROM openjdk:8-alpine
 
-ARG SPARK_VERSION_ARG=2.4.2
+ARG SPARK_VERSION_ARG=2.4.3
 
 ENV BASE_IMAGE      openjdk:8-alpine
 ENV SPARK_VERSION   $SPARK_VERSION_ARG
@@ -19,7 +19,7 @@ RUN set -ex && \
     chgrp root /etc/passwd && chmod ug+rw /etc/passwd
 
 ### install spark
-RUN wget -O /spark-${SPARK_VERSION}-bin-without-hadoop.tgz http://www-us.apache.org/dist/spark/spark-${SPARK_VERSION}/spark-${SPARK_VERSION}-bin-without-hadoop.tgz && \
+RUN wget -O /spark-${SPARK_VERSION}-bin-without-hadoop.tgz https://archive.apache.org/dist/spark/spark-${SPARK_VERSION}/spark-${SPARK_VERSION}-bin-without-hadoop.tgz && \
     tar -xzf /spark-${SPARK_VERSION}-bin-without-hadoop.tgz -C /opt/ && \
     ln -s /opt/spark-${SPARK_VERSION}-bin-without-hadoop $SPARK_HOME && \
     rm -f /spark-${SPARK_VERSION}-bin-without-hadoop.tgz && \

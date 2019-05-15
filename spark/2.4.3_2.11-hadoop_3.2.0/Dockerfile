@@ -1,4 +1,4 @@
-ARG SPARK_BASE=sasnouskikh/spark-base:2.4.2_2.11-without-hadoop
+ARG SPARK_BASE=sasnouskikh/spark-base:2.4.3_2.11-without-hadoop
 FROM $SPARK_BASE
 
 ARG HADOOP_VERSION_ARG=3.2.0
@@ -19,11 +19,6 @@ RUN wget -O /hadoop-${HADOOP_VERSION}.tar.gz http://www-us.apache.org/dist/hadoo
     ln -s /opt/hadoop-${HADOOP_VERSION} $HADOOP_HOME && \
     rm -f /hadoop-${HADOOP_VERSION}.tar.gz && \
     rm -rf $HADOOP_HOME/share/doc $HADOOP_HOME/etc/hadoop/core-site.xml $HADOOP_HOME/etc/hadoop/log4j.properties
-
-#COPY native/libhdfs.a           $HADOOP_HOME/lib/native/
-#COPY native/libsnappy.so.1.1.3  $HADOOP_HOME/lib/native/
-#COPY native/libsnappy.so.1      $HADOOP_HOME/lib/native/
-#COPY native/libsnappy.so        $HADOOP_HOME/lib/native/
 
 # upgrade hadoop libs
 RUN rm -f $HADOOP_HOME/share/hadoop/common/lib/guava-11.0.2.jar && \

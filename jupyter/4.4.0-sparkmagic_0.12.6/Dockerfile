@@ -1,12 +1,16 @@
 # https://github.com/jupyter-incubator/sparkmagic/tree/0.12.6
 # FROM jupyter/base-notebook:ae885c0a6226 <-- old
 
-FROM jupyter/base-notebook:87210526f381
+FROM jupyter/base-notebook:ae5f7e104dd5
 
 USER root
 
 # This is needed because requests-kerberos fails to install on debian due to missing linux headers
 RUN conda install requests-kerberos -y
+
+RUN apt-get update && apt-get install --yes \
+    git && \
+    rm -rf /var/lib/apt/lists/*
 
 USER $NB_USER
 
@@ -25,6 +29,11 @@ RUN jupyter-kernelspec install --user $(pip show sparkmagic | grep Location | cu
 RUN jupyter-kernelspec install --user $(pip show sparkmagic | grep Location | cut -d" " -f2)/sparkmagic/kernels/sparkrkernel
 RUN jupyter serverextension enable --py sparkmagic
 
+RUN pip install nbgitpuller && \
+    jupyter serverextension enable --py nbgitpuller --sys-prefix
+# Uncomment the line below to make nbgitpuller default to start up in JupyterLab
+#ENV NBGITPULLER_APP=lab
+
 USER root
 RUN chown $NB_USER /home/$NB_USER/.sparkmagic/config.json
 
@@ -35,6 +44,7 @@ RUN chmod +x /opt/*.sh && \
     mkdir -p /home/$NB_USER/notebooks && \
     chmod -R 777 /home/$NB_USER/notebooks
 
-ENTRYPOINT [ "/opt/entrypoint.sh" ]
+ENTRYPOINT ["tini", "-g", "--"]
+CMD [ "/opt/entrypoint.sh" ]
 
 USER $NB_USER

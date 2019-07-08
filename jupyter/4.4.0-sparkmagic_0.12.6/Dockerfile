@@ -1,5 +1,5 @@
 # https://github.com/jupyter-incubator/sparkmagic/tree/0.12.6
-# FROM jupyter/base-notebook:ae885c0a6226 <-- old
+# https://github.com/jupyter/docker-stacks/blob/master/base-notebook/Dockerfile
 
 FROM jupyter/base-notebook:ae5f7e104dd5
 

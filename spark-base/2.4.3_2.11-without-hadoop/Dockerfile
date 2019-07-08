@@ -1,14 +1,21 @@
-FROM openjdk:8-alpine
+ARG BASE_CONTAINER=openjdk:8-alpine
+
+FROM $BASE_CONTAINER
 
 ARG SPARK_VERSION_ARG=2.4.3
 
-ENV BASE_IMAGE      openjdk:8-alpine
+LABEL maintainer="Aliaksandr Sasnouskikh <jaahstreetlove@gmail.com>"
+
+ENV BASE_IMAGE      $BASE_CONTAINER
+
 ENV SPARK_VERSION   $SPARK_VERSION_ARG
 ENV HADOOP_VERSION  without-hadoop
 
 ENV SPARK_HOME      /opt/spark
 ENV SPARK_CONF_DIR  $SPARK_HOME/conf
 ENV PATH            $PATH:$SPARK_HOME/bin
+
+ENV SPARK_CLASSPATH $SPARK_CONF_DIR
 
 RUN set -ex && \
     apk upgrade --no-cache && \
@@ -18,7 +25,7 @@ RUN set -ex && \
     echo "auth required pam_wheel.so use_uid" >> /etc/pam.d/su && \
     chgrp root /etc/passwd && chmod ug+rw /etc/passwd
 
-### install spark
+# install spark
 RUN wget -O /spark-${SPARK_VERSION}-bin-without-hadoop.tgz https://archive.apache.org/dist/spark/spark-${SPARK_VERSION}/spark-${SPARK_VERSION}-bin-without-hadoop.tgz && \
     tar -xzf /spark-${SPARK_VERSION}-bin-without-hadoop.tgz -C /opt/ && \
     ln -s /opt/spark-${SPARK_VERSION}-bin-without-hadoop $SPARK_HOME && \
@@ -30,10 +37,6 @@ COPY conf/* $SPARK_CONF_DIR/
 COPY entrypoint.sh /opt/
 COPY Dockerfile /my_docker/
 
-COPY conf/log4j.properties /my_docker/conf/
-ENV SPARK_CLASSPATH="/my_docker/conf"
-
-RUN chmod +x /opt/*.sh
-
 WORKDIR $SPARK_HOME/work-dir
+
 ENTRYPOINT [ "/opt/entrypoint.sh" ]

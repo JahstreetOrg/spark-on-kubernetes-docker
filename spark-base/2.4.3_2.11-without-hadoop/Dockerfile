@@ -13,9 +13,10 @@ ENV HADOOP_VERSION  without-hadoop
 
 ENV SPARK_HOME      /opt/spark
 ENV SPARK_CONF_DIR  $SPARK_HOME/conf
-ENV PATH            $PATH:$SPARK_HOME/bin
 
 ENV SPARK_CLASSPATH $SPARK_HOME/cluster-conf
+
+ENV PATH            $PATH:$SPARK_HOME/bin:$CONDA_DIR/bin
 
 ENV PYTHONHASHSEED  0
 ENV CONDA_DIR       /opt/conda

@@ -23,7 +23,10 @@ RUN wget -O /hadoop-${HADOOP_VERSION}.tar.gz http://www-us.apache.org/dist/hadoo
     tar -xzf /hadoop-${HADOOP_VERSION}.tar.gz -C /opt/ && \
     ln -s /opt/hadoop-${HADOOP_VERSION} $HADOOP_HOME && \
     rm -f /hadoop-${HADOOP_VERSION}.tar.gz && \
-    rm -rf $HADOOP_HOME/share/doc $HADOOP_HOME/etc/hadoop/core-site.xml $HADOOP_HOME/etc/hadoop/log4j.properties
+    rm -rf $HADOOP_HOME/share/doc \
+           $HADOOP_HOME/etc/hadoop/core-site.xml \
+           $HADOOP_HOME/etc/hadoop/log4j.properties \
+           $HADOOP_HOME/share/hadoop/tools/sls/sample-conf/log4j.properties
 
 # upgrade hadoop libs
 RUN rm -f $HADOOP_HOME/share/hadoop/common/lib/guava-11.0.2.jar && \
@@ -71,7 +74,8 @@ RUN cp -f $HADOOP_HOME/share/hadoop/hdfs/lib/guava-23.0.jar $SPARK_HOME/jars/ &&
     wget -q -O $SPARK_HOME/jars/commons-configuration-1.6.jar http://central.maven.org/maven2/commons-configuration/commons-configuration/1.6/commons-configuration-1.6.jar && \
     wget -q -O $SPARK_HOME/jars/spark-avro_2.11-4.0.0.jar http://central.maven.org/maven2/com/databricks/spark-avro_2.11/4.0.0/spark-avro_2.11-4.0.0.jar && \
     wget -q -O $SPARK_HOME/jars/spark-avro_2.11-2.4.2.jar http://central.maven.org/maven2/org/apache/spark/spark-avro_2.11/2.4.2/spark-avro_2.11-2.4.2.jar && \
-    wget -q -O $SPARK_HOME/jars/kryo-serializers-0.45.jar http://central.maven.org/maven2/de/javakaffee/kryo-serializers/0.45/kryo-serializers-0.45.jar
+    wget -q -O $SPARK_HOME/jars/kryo-serializers-0.45.jar http://central.maven.org/maven2/de/javakaffee/kryo-serializers/0.45/kryo-serializers-0.45.jar && \
+    wget -q -O $SPARK_HOME/jars/spark-hive_2.11-2.4.3.jar https://repo1.maven.org/maven2/org/apache/spark/spark-hive_2.11/2.4.3/spark-hive_2.11-2.4.3.jar
 
 # add monitoring dependencies
 RUN wget -q -O $SPARK_HOME/jars/jmx_prometheus_javaagent-0.11.0.jar http://central.maven.org/maven2/io/prometheus/jmx/jmx_prometheus_javaagent/0.11.0/jmx_prometheus_javaagent-0.11.0.jar && \
@@ -80,6 +84,8 @@ RUN wget -q -O $SPARK_HOME/jars/jmx_prometheus_javaagent-0.11.0.jar http://centr
     wget -q -O $SPARK_HOME/jars/simpleclient_dropwizard-0.6.0.jar http://central.maven.org/maven2/io/prometheus/simpleclient_dropwizard/0.6.0/simpleclient_dropwizard-0.6.0.jar && \
     wget -q -O $SPARK_HOME/jars/simpleclient_pushgateway-0.6.0.jar http://central.maven.org/maven2/io/prometheus/simpleclient_pushgateway/0.6.0/simpleclient_pushgateway-0.6.0.jar && \
     wget -q -O $SPARK_HOME/jars/collector-0.11.0.jar http://central.maven.org/maven2/io/prometheus/jmx/collector/0.11.0/collector-0.11.0.jar
+
+RUN pip install --no-cache-dir azure-datalake-store
 
 COPY Dockerfile /my_docker/
 

@@ -26,10 +26,10 @@ RUN set -ex && \
 ### install spark
 # git checkout 2.4.5
 # dev/make-distribution.sh --name hadoop-3.1-cloud-scala-2.11 --pip --tgz -Phadoop-3.1 -Phadoop-cloud -Pkubernetes -DskipTests
-COPY bin/spark-${SPARK_VERSION}-bin-${HADOOP_VERSION}-scala-${SCALA_RESION}.tgz /
-RUN tar -xzf /spark-${SPARK_VERSION}-bin-${HADOOP_VERSION}-scala-${SCALA_RESION}.tgz -C /opt/ && \
-    ln -s /opt/spark-${SPARK_VERSION}-bin-${HADOOP_VERSION}-scala-${SCALA_RESION}.tgz $SPARK_HOME && \
-    rm -f /spark-${SPARK_VERSION}-bin-${HADOOP_VERSION}-scala-${SCALA_RESION}.tgz && \
+COPY bin/spark-${SPARK_VERSION}-bin-${HADOOP_VERSION}-scala-${SCALA_VERSION}.tgz /
+RUN tar -xzf /spark-${SPARK_VERSION}-bin-${HADOOP_VERSION}-scala-${SCALA_VERSION}.tgz -C /opt/ && \
+    ln -s /opt/spark-${SPARK_VERSION}-bin-${HADOOP_VERSION}-scala-${SCALA_VERSION} $SPARK_HOME && \
+    rm -f /spark-${SPARK_VERSION}-bin-${HADOOP_VERSION}-scala-${SCALA_VERSION}.tgz && \
     mkdir -p $SPARK_HOME/work-dir && \
     mkdir -p $SPARK_HOME/spark-warehouse
 

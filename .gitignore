@@ -4,3 +4,4 @@
 *.jar
 
 stash
+.DS_Store

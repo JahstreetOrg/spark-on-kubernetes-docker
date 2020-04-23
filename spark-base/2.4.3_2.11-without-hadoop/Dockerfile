@@ -67,7 +67,7 @@ RUN mkdir -p $CONDA_DIR && \
     $CONDA_DIR/bin/conda update --all --quiet --yes && \
     conda clean -tipsy
 
-# Install python packages
+# install python packages
 RUN conda install numpy scipy pandas scikit-learn
 RUN conda install -c conda-forge pyarrow --yes
 RUN conda clean -a -y

@@ -12,7 +12,8 @@ parent_dir_path=$(dirname ${dir_path})
 
 repo="$DOCKERHUB_REPO/${parent_dir_path##*/}"
 tag="${dir_path##*/}"
+image="${repo}:${tag}-4.9.2-test"
 
-( cd ${dir_path}; docker build . ${no_cache} -t "${repo}:${tag}" )
-docker push "${repo}:${tag}"
+( cd ${dir_path}; docker build . ${no_cache} -t "${image}" )
+docker push "${image}"
 echo "Done! Enjoy..."

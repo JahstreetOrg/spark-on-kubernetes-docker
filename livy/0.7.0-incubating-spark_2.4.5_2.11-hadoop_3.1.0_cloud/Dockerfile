@@ -1,4 +1,4 @@
-ARG SPARK_BASE=sasnouskikh/livy-spark:0.7.0-incubating-spark_2.4.5_2.11-hadoop_3.1.0_cloud
+ARG SPARK_BASE=sasnouskikh/livy-spark:0.7.0-incubating-spark_2.4.5_2.11-hadoop_3.1.0_cloud-4.9.2-test
 
 FROM $SPARK_BASE
 

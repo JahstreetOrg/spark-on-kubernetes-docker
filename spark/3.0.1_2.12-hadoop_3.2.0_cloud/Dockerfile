@@ -1,5 +1,5 @@
 ### Builder Container
-FROM sasnouskikh/livy-builder:0.3 as build
+FROM jeromebanks/livy-builder:0.3 as build
 
 RUN cd / && \
     git clone https://github.com/apache/spark.git --branch v3.0.1 --single-branch && \
@@ -15,7 +15,7 @@ RUN cd / && \
 ### Final Container
 FROM openjdk:8-jre-slim
 
-LABEL maintainer="Aliaksandr Sasnouskikh <jaahstreetlove@gmail.com>"
+LABEL maintainer="Jerome Banks <jerome@tatari.tv>"
 
 ENV BASE_IMAGE      openjdk:8-jre-slim
 

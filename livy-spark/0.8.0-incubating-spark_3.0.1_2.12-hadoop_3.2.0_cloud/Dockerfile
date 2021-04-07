@@ -1,11 +1,12 @@
-ARG SPARK_BASE=sasnouskikh/spark:3.0.1_2.12-hadoop_3.2.0_cloud
-ARG LIVY_BUILDER=sasnouskikh/livy-builder:0.3
+ARG SPARK_BASE=jeromebanks/spark:3.0.1_2.12-hadoop_3.2.0_cloud
+ARG LIVY_BUILDER=jeromebanks/livy-builder:0.3
 
 ### Livy Builder Container
 FROM $LIVY_BUILDER as build
 
-ARG LIVY_GITHUB_REPO=jahstreet/incubator-livy
-ARG LIVY_GITHUB_BRANCH=merge/first
+ARG LIVY_GITHUB_REPO=tatari-tv/incubator-livy
+###ARG LIVY_GITHUB_BRANCH=merge/first
+ARG LIVY_GITHUB_BRANCH=master
 # ARG LIVY_GITHUB_BRANCH=v0.8.0/spark-3.0.0
 
 RUN git clone https://github.com/${LIVY_GITHUB_REPO}.git --branch ${LIVY_GITHUB_BRANCH} --single-branch --depth=50 && \
@@ -23,7 +24,7 @@ FROM $SPARK_BASE
 
 ARG LIVY_VERSION_ARG=0.8.0-incubating-SNAPSHOT
 
-LABEL maintainer="Aliaksandr Sasnouskikh <jaahstreetlove@gmail.com>"
+LABEL maintainer="Jerome Banks <jerome@tatari.tv>"
 
 ENV BASE_IMAGE              $SPARK_BASE#$BASE_IMAGE
 

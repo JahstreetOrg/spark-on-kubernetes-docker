@@ -1,6 +1,10 @@
 ### Builder Container
 FROM jeromebanks/livy-builder:0.3 as build
 
+ARG aws_bundle_version=1.11.1001
+RUN mvn dependency:copy -Dartifact=com.amazonaws:aws-java-sdk-bundle:${aws_bundle_version} -DoutputDirectory=/tmp
+
+
 RUN cd / && \
     git clone https://github.com/apache/spark.git --branch v3.1.1 --single-branch && \
     cd /spark && \
@@ -13,11 +17,13 @@ RUN cd / && \
     cp spark-3.1.1-bin-hadoop-3.2.0-cloud-scala-2.12.tgz /
 
 ### Final Container
-FROM openjdk:8-jre-slim
+ARG java_image_tag=11-jre-slim
+
+FROM openjdk:11-jre-slim
 
 LABEL maintainer="Jerome Banks <jerome@tatari.tv>"
 
-ENV BASE_IMAGE      openjdk:8-jre-slim
+ENV BASE_IMAGE      openjdk:${java_image_tag}
 
 RUN set -ex && \
     sed -i 's/http:/https:/g' /etc/apt/sources.list && \
@@ -53,12 +59,16 @@ ARG spark_uid=185
 
 ### install spark
 COPY --from=build /spark-${SPARK_VERSION}-bin-${HADOOP_VERSION}-scala-${SCALA_VERSION}.tgz /
+COPY --from=build /tmp/aws-java-sdk-bundle-*.jar /
 RUN tar -xzf /spark-${SPARK_VERSION}-bin-${HADOOP_VERSION}-scala-${SCALA_VERSION}.tgz -C /opt/ && \
     ln -s /opt/spark-${SPARK_VERSION}-bin-${HADOOP_VERSION}-scala-${SCALA_VERSION} $SPARK_HOME && \
     rm -f /spark-${SPARK_VERSION}-bin-${HADOOP_VERSION}-scala-${SCALA_VERSION}.tgz && \
     mkdir -p $SPARK_HOME/work-dir && \
     mkdir -p $SPARK_HOME/spark-warehouse && \
-    mkdir -p $SPARK_HOME/cluster-conf
+    mkdir -p $SPARK_HOME/cluster-conf && \
+    rm $SPARK_HOME/jars/aws-java-sdk-bundle*.jar && \
+    cp /aws-java-sdk-bundle-*.jar $SPARK_HOME/jars
+
 
 # install Conda (https://github.com/jupyter/docker-stacks/blob/6d42503c684f3de9b17ce92a6b0c952ef2d1ecd8/base-notebook/Dockerfile#L78-L101)
 RUN mkdir -p $CONDA_DIR && \

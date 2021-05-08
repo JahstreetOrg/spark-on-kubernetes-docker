@@ -1,4 +1,4 @@
-ARG SPARK_BASE=jeromebanks/spark:3.0.1_2.12-hadoop_3.2.0_cloud
+ARG SPARK_BASE=jeromebanks/spark:3.1.1_2.12-hadoop_3.2.0_cloud
 ARG LIVY_BUILDER=jeromebanks/livy-builder:0.3
 
 ### Livy Builder Container
@@ -12,7 +12,7 @@ ARG LIVY_GITHUB_BRANCH=master
 RUN git clone https://github.com/${LIVY_GITHUB_REPO}.git --branch ${LIVY_GITHUB_BRANCH} --single-branch --depth=50 && \
     cd incubator-livy && \
     mvn clean package -B -V -e \
-        -Pspark-3.0 \
+        -Pspark-3.1 \
         -Pthriftserver \
         -DskipTests \
         -DskipITs \
@@ -52,4 +52,5 @@ COPY Dockerfile /my_docker/
 #  7079 - Blockmanager port
 #  8088 - JMX Exporter for Prometheus
 # 10000 - Livy RPC Server for Jupyter integration
-EXPOSE 4040 7078 7079 8088 10000
+# 10015 - Spark Thrift server port
+EXPOSE 4040 7078 7079 8088 10000 10015

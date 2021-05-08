@@ -1,4 +1,4 @@
-ARG SPARK_BASE=jeromebanks/livy-spark:0.7.0-incubating-spark_2.4.5_2.11-hadoop_3.1.0_cloud-4.9.2-test
+ARG SPARK_BASE=jeromebanks/livy-spark:0.8.0-incubating-spark_3.1.1_2.12-hadoop_3.2.0_cloud
 
 FROM $SPARK_BASE
 

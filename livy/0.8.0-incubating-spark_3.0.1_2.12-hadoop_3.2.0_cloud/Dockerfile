@@ -1,8 +1,8 @@
-ARG SPARK_BASE=sasnouskikh/livy-spark:0.8.0-incubating-spark_3.0.1_2.12-hadoop_3.2.0_cloud
+ARG SPARK_BASE=jeromebanks/livy-spark:0.8.0-incubating-spark_3.0.1_2.12-hadoop_3.2.0_cloud
 
 FROM $SPARK_BASE
 
-LABEL maintainer="Aliaksandr Sasnouskikh <jaahstreetlove@gmail.com>"
+LABEL maintainer="Jerome Banks <jerome@tatari.tv>"
 
 ENV BASE_IMAGE	$SPARK_BASE#$BASE_IMAGE
 

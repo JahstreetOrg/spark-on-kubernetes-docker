@@ -1,4 +1,4 @@
-FROM openjdk:8-jdk-slim
+FROM openjdk:11-jdk-slim
 
 ENV DEBIAN_FRONTEND=noninteractive
 
@@ -24,3 +24,4 @@ RUN apt-get -qq update && \
 ENV M2_HOME=/opt/maven
 ENV MAVEN_HOME=/opt/maven
 ENV PATH=${PATH}:${M2_HOME}/bin
+

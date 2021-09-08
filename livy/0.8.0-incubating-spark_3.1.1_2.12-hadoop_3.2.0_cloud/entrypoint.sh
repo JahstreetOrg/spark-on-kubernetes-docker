@@ -19,6 +19,8 @@
 
 set -eu
 
+echo "Ahoy, Livy !!!"
+
 : "${LIVY_CONF_DIR:?Variable not set or empty}"
 : "${SPARK_CONF_DIR:?Variable not set or empty}"
 

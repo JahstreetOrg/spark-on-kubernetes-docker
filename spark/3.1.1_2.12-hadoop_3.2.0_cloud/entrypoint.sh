@@ -59,14 +59,16 @@ fi
 
 # If HADOOP_HOME is set and SPARK_DIST_CLASSPATH is not set, set it here so Hadoop jars are available to the executor.
 # It does not set SPARK_DIST_CLASSPATH if already set, to avoid overriding customizations of this value from elsewhere e.g. Docker/K8s.
-#if [ -n ${HADOOP_HOME}  ] && [ -z ${SPARK_DIST_CLASSPATH}  ]; then
-#  export SPARK_DIST_CLASSPATH=$($HADOOP_HOME/bin/hadoop classpath)  
-#fi
+if [ -n ${HADOOP_HOME}  ] && [ -z ${SPARK_DIST_CLASSPATH}  ]; then
+  export SPARK_DIST_CLASSPATH=$($HADOOP_HOME/bin/hadoop classpath)  
+fi
 
-#if ! [ -z ${HADOOP_CONF_DIR+x} ]; then
-#  SPARK_CLASSPATH="$HADOOP_CONF_DIR:$SPARK_CLASSPATH";
-#fi
+if ! [ -z ${HADOOP_CONF_DIR+x} ]; then
+  SPARK_CLASSPATH="$HADOOP_CONF_DIR:$SPARK_CLASSPATH";
+fi
 echo "SPARK_CLASSPATH = ${SPARK_CLASSPATH}"
+
+
 
 case "$1" in
   driver)
@@ -92,6 +94,7 @@ case "$1" in
       --cores $SPARK_EXECUTOR_CORES
       --app-id $SPARK_APPLICATION_ID
       --hostname $SPARK_EXECUTOR_POD_IP
+      --resourceProfileId $SPARK_RESOURCE_PROFILE_ID
     )
     ;;
 

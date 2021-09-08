@@ -1,4 +1,4 @@
-ARG SPARK_BASE=jeromebanks/spark:3.1.1_2.12-hadoop_3.2.0_cloud
+ARG SPARK_BASE=jeromebanks/spark:3.1.1_2.12-hadoop_3.2.0_cloud_TT6
 ARG LIVY_BUILDER=jeromebanks/livy-builder:0.3
 
 ### Livy Builder Container
@@ -6,7 +6,9 @@ FROM $LIVY_BUILDER as build
 
 ARG LIVY_GITHUB_REPO=tatari-tv/incubator-livy
 ###ARG LIVY_GITHUB_BRANCH=merge/first
-ARG LIVY_GITHUB_BRANCH=master
+#ARG LIVY_GITHUB_BRANCH=master
+#ARG LIVY_GITHUB_BRANCH=topic/spark-3.1
+ARG LIVY_GITHUB_BRANCH=LIVY-327
 # ARG LIVY_GITHUB_BRANCH=v0.8.0/spark-3.0.0
 
 RUN git clone https://github.com/${LIVY_GITHUB_REPO}.git --branch ${LIVY_GITHUB_BRANCH} --single-branch --depth=50 && \

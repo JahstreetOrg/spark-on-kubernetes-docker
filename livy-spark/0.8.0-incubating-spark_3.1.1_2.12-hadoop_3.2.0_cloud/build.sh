@@ -11,7 +11,7 @@ no_cache="--no-cache"
 parent_dir_path=$(dirname ${dir_path})
 
 repo="$DOCKERHUB_REPO/${parent_dir_path##*/}"
-tag="${dir_path##*/}"
+tag="${dir_path##*/}_TT6"
 
 ( cd ${dir_path}; docker build . ${no_cache} -t "${repo}:${tag}" )
 docker push "${repo}:${tag}"

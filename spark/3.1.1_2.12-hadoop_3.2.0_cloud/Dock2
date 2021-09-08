@@ -73,6 +73,7 @@ RUN tar -xzf /spark-${SPARK_VERSION}-bin-${HADOOP_VERSION}-scala-${SCALA_VERSION
     rm $SPARK_HOME/jars/aws-java-sdk-bundle*.jar && \
     cp /aws-java-sdk-bundle-*.jar $SPARK_HOME/jars 
 
+ADD jars/dd-spark-metrics-assembly-0.1.0.jar $SPARK_HOME/jars
 
 # install Conda (https://github.com/jupyter/docker-stacks/blob/6d42503c684f3de9b17ce92a6b0c952ef2d1ecd8/base-notebook/Dockerfile#L78-L101)
 RUN mkdir -p $CONDA_DIR && \

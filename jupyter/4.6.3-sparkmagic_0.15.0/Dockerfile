@@ -6,7 +6,7 @@ ARG BASE_CONTAINER=jupyter/scipy-notebook:6d42503c684f
 
 FROM $BASE_CONTAINER
 
-LABEL maintainer="Aliaksandr Sasnouskikh <jaahstreetlove@gmail.com>"
+LABEL maintainer="Jerome Banks <jerome@tatari.tv>"
 
 # Install Sparkmagic kernel
 # https://github.com/jupyter-incubator/sparkmagic/blob/master/Dockerfile.jupyter

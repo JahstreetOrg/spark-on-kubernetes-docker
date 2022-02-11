@@ -6,6 +6,9 @@ LABEL maintainer="Aliaksandr Sasnouskikh <jaahstreetlove@gmail.com>"
 
 ENV BASE_IMAGE	$SPARK_BASE#$BASE_IMAGE
 
+RUN apt-get update --allow-releaseinfo-change && \
+    apt-get install curl -y
+
 RUN cp $LIVY_CONF_DIR/log4j.properties.template $LIVY_CONF_DIR/log4j.properties && \
     mkdir -p $LIVY_HOME/work-dir && \
     mkdir /var/log/livy && \

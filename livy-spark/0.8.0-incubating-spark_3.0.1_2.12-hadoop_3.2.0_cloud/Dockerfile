@@ -36,7 +36,7 @@ ENV PATH                    $PATH:$LIVY_HOME/bin
 # install livy
 COPY --from=build /apache-livy-${LIVY_VERSION}-bin.zip /
 USER root
-RUN apt-get install -y unzip && \
+RUN apt-get install -y unzip curl && \
     unzip /apache-livy-${LIVY_VERSION}-bin.zip -d / && \
     mv /apache-livy-${LIVY_VERSION}-bin /opt/ && \
     rm -rf $LIVY_HOME && \
